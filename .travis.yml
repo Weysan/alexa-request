@@ -8,4 +8,4 @@ php:
 
 install: composer update
 
-script: phpunit --coverage-text
+script: vendor/bin/phpunit --coverage-text
