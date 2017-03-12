@@ -9,3 +9,6 @@ php:
 install: composer update
 
 script: vendor/bin/phpunit --coverage-text
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v

@@ -8,7 +8,8 @@
     "require-dev": {
         "phplint/phplint": "^0.0.1",
         "phpunit/phpunit": "^5.7",
-        "mockery/mockery": "^0.9.9"
+        "mockery/mockery": "^0.9.9",
+        "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-4": {"Weysan\\Alexa\\": "./"}
