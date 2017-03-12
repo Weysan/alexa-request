@@ -1,6 +1,7 @@
 #Alexa Requests Handler
 
 [![Build Status](https://travis-ci.org/Weysan/alexa-request.svg?branch=master)](https://travis-ci.org/Weysan/alexa-request)
+[![Coverage Status](https://coveralls.io/repos/github/Weysan/alexa-request/badge.svg?branch=master)](https://coveralls.io/github/Weysan/alexa-request?branch=master)
 
 Small PHP Library in order to handle incoming and outgoing requests for
 Amazon's Alexa applications in PHP.
