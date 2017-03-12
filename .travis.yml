@@ -6,6 +6,6 @@ php:
   - '7.1'
   - hhvm
 
-install: composer install
+install: composer update
 
 script: phpunit --coverage-text
