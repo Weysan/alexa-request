@@ -8,6 +8,7 @@ use Weysan\Alexa\AlexaOutgoingGenerator;
 use Weysan\Alexa\IntentRegistry;
 use Weysan\Alexa\Intents\IntentsInterface;
 use Weysan\Alexa\Response\OutputSpeech;
+use Weysan\Alexa\Response\SessionAttributes;
 
 class AlexaOutgoingGeneratorTest extends TestCase
 {
@@ -50,6 +51,9 @@ class AlexaOutgoingGeneratorTest extends TestCase
         $intentMock = \Mockery::mock(IntentsInterface::class);
         $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
             $fakeOutput
+        );
+        $intentMock->shouldReceive("getSessionAttributes")->once()->andReturn(
+            new SessionAttributes()
         );
         return $intentMock;
     }
