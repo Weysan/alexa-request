@@ -9,9 +9,16 @@ use Weysan\Alexa\IntentRegistry;
 use Weysan\Alexa\Intents\IntentsInterface;
 use Weysan\Alexa\Response\OutputSpeech;
 use Weysan\Alexa\Response\SessionAttributes;
+use Weysan\Alexa\Tests\Mock\MockIntentWithAlexaIncomingClass;
 
 class AlexaOutgoingGeneratorTest extends TestCase
 {
+    public function tearDown()
+    {
+        IntentRegistry::unregisterIntentHandler("GetJoke");
+    }
+
+
     public function testGenerationOutgoing()
     {
         IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
@@ -65,6 +72,23 @@ class AlexaOutgoingGeneratorTest extends TestCase
     }
 
     /**
+     * Test the DI of incoming message
+     */
+    public function testInjectIncomingRequestToIntentHandler()
+    {
+        $intentMock = \Mockery::mock(MockIntentWithAlexaIncomingClass::class);
+        $incomingMock = $this->getAlexaIncomingInstance();
+        $this->getIntentClassMock($intentMock);
+
+        $intentMock->shouldReceive("setAlexaIncomingRequest")->with($incomingMock)->once();
+
+        IntentRegistry::registerIntentHandler("GetJoke", $intentMock);
+
+        new AlexaOutgoingGenerator($incomingMock);
+        $this->assertTrue(true);
+    }
+
+    /**
      * @return AlexaIncomingRequest
      */
     protected function getAlexaIncomingInstance()
@@ -75,13 +99,16 @@ class AlexaOutgoingGeneratorTest extends TestCase
         return $parser;
     }
 
-    protected function getIntentClassMock()
+    protected function getIntentClassMock($intentMock = null)
     {
         $fakeOutput = new OutputSpeech();
         $fakeOutput->setType(OutputSpeech::TYPE_PLAIN_TEXT);
         $fakeOutput->setOutput("fake");
 
-        $intentMock = \Mockery::mock(IntentsInterface::class);
+        if (null === $intentMock) {
+            $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
+        }
+
         $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
             $fakeOutput
         );

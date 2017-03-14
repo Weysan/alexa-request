@@ -15,8 +15,23 @@ class AlexaOutgoingGenerator
     public function __construct(AlexaIncomingRequest $incomingRequest)
     {
         $this->incomingRequest = $incomingRequest;
+        $this->addIncomingRequestToIntentHandler();
     }
 
+    /**
+     * @return $this
+     */
+    protected function addIncomingRequestToIntentHandler()
+    {
+        if (method_exists(IntentRegistry::getIntentHandler($this->incomingRequest), "setAlexaIncomingRequest")) {
+            IntentRegistry::getIntentHandler($this->incomingRequest)->setAlexaIncomingRequest($this->incomingRequest);
+        }
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
     protected function constructResponse()
     {
         $this->dataToSend['version'] = "0.1";
