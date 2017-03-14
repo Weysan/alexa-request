@@ -1,4 +1,4 @@
-#Alexa Requests Handler
+# Alexa Requests Handler
 
 [![Build Status](https://travis-ci.org/Weysan/alexa-request.svg?branch=master)](https://travis-ci.org/Weysan/alexa-request)
 [![Coverage Status](https://coveralls.io/repos/github/Weysan/alexa-request/badge.svg?branch=master)](https://coveralls.io/github/Weysan/alexa-request?branch=master)
@@ -53,6 +53,9 @@ class Joke implements IntentsInterface
     }
 }
 ~~~
+
+**Note** : If your Intent needs to access to Slots parameters or sessionAttributes, just add the trait `Weysan\Alexa\Helper\AlexaIncomingRequestAwareTrait`
+in your class, you will have access to the current instance of `AlexaIncomingRequest`
 
 After, Register your intent into `Weysan\Alexa\IntentRegistry`
 
