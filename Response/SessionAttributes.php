@@ -20,6 +20,10 @@ class SessionAttributes
         return $this;
     }
 
+    /**
+     * @param string $key
+     * @return bool|mixed
+     */
     public function getAttribute($key)
     {
         if (key_exists($key, $this->session)) {

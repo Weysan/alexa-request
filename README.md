@@ -17,6 +17,7 @@ I use the component `symfony/http-foundation` to handle HTTP requests.
 
 First, you have to create an Intent class which implement `Weysan\Alexa\Intents\IntentsInterface`.
 You need to create a method `getResponseObject` which is returning a `Weysan\Alexa\Response\OutputSpeech` instance.
+You also need to create a method `getSessionAttributes` which is returning a `Weysan\Alexa\Response\SessionAttributes` instance.
 
 For example :
 
@@ -25,6 +26,7 @@ namespace My\App;
 
 use Weysan\Alexa\Intents\IntentsInterface;
 use Weysan\Alexa\Response\OutputSpeech;
+use Weysan\Alexa\Response\SessionAttributes;
 
 class Joke implements IntentsInterface
 {
@@ -38,6 +40,16 @@ class Joke implements IntentsInterface
         $outputSpeech->setOutput("Here we go! This is a super Joke...");
 
         return $outputSpeech;
+    }
+    
+    /**
+     * @return SessionAttributes
+     */
+    public function getSessionAttributes()
+    {
+        $sessionAttribute = new SessionAttributes();
+        $sessionAttribute->addAttribute("my_key", "my_value");
+        return $sessionAttribute;
     }
 }
 ~~~
