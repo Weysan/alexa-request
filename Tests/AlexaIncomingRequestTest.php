@@ -16,5 +16,9 @@ class AlexaIncomingRequestTest extends TestCase
 
         $this->assertNotEmpty($parser->getAppId());
         $this->assertEquals("GetJoke", $parser->getRequestIntent());
+        $this->assertEquals("1.0", $parser->getVersion());
+        $this->assertEquals("IntentRequest", $parser->getRequestType());
+        $this->assertEquals("fakeuserID-hjfd-55674654", $parser->getUserId());
+        $this->assertEquals("SessionId.hjkjhj-6546546-lfhdsjh", $parser->getSessionId());
     }
 }

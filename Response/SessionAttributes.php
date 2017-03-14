@@ -20,6 +20,14 @@ class SessionAttributes
         return $this;
     }
 
+    public function getAttribute($key)
+    {
+        if (key_exists($key, $this->session)) {
+            return $this->session[$key];
+        }
+        return false;
+    }
+
     /**
      * @param string $key
      * @return $this

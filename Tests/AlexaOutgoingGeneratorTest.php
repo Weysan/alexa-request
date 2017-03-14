@@ -31,6 +31,39 @@ class AlexaOutgoingGeneratorTest extends TestCase
         ], $output->getResponse());
     }
 
+    public function testGenerationOutgoingWithoutEndingSession()
+    {
+        IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
+
+        $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance());
+        $output->willEndSession(false);
+        $this->assertEquals([
+            "version" => "0.1",
+            "response" => [
+                "outputSpeech" => [
+                    "type" => "PlainText",
+                    "text" => "fake"
+                ]
+            ],
+            "sessionAttributes" => [],
+            "shouldEndSession" => false
+        ], $output->getResponse());
+
+        $output->willEndSession(true);
+
+        $this->assertEquals([
+            "version" => "0.1",
+            "response" => [
+                "outputSpeech" => [
+                    "type" => "PlainText",
+                    "text" => "fake"
+                ]
+            ],
+            "sessionAttributes" => [],
+            "shouldEndSession" => true
+        ], $output->getResponse());
+    }
+
     /**
      * @return AlexaIncomingRequest
      */

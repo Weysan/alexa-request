@@ -40,4 +40,13 @@ class OutputSpeechTest extends TestCase
 
         $this->assertFalse($outputSpeech->getFormatedData());
     }
+
+    public function testWrongOutputType()
+    {
+        $outputSpeech = new OutputSpeech();
+        $outputSpeech->setType("bla bla bla");
+        $this->assertTrue($outputSpeech->setOutput("my output"));
+
+        $this->assertFalse($outputSpeech->getFormatedData());
+    }
 }

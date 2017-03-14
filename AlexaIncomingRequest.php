@@ -24,7 +24,7 @@ class AlexaIncomingRequest
 
     public function getUserId()
     {
-        return $this->requestBody['user']['userId'];
+        return $this->requestBody['session']['user']['userId'];
     }
 
     public function getVersion()

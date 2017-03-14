@@ -9,11 +9,22 @@ use Weysan\Alexa\Intents\IntentsInterface;
 
 class IntentRegistryTest extends TestCase
 {
+
+    protected $intentsRegistered = [];
+
+    public function tearDown()
+    {
+        foreach ($this->intentsRegistered as $intentName) {
+            IntentRegistry::unregisterIntentHandler($intentName);
+        }
+        $this->intentsRegistered = [];
+    }
+
     public function testRegisterSimpleIntent()
     {
         $mockIntent = $this->getIntentClassMock();
         IntentRegistry::registerIntentHandler("IntentName", $mockIntent);
-
+        $this->intentsRegistered[] = "IntentName";
         $this->assertEquals(
             $mockIntent,
             IntentRegistry::getIntentHandler($this->getAlexaIncomingRequest("IntentName"))
@@ -27,11 +38,16 @@ class IntentRegistryTest extends TestCase
     {
         $mockIntent = $this->getIntentClassMock();
         IntentRegistry::registerIntentHandler("IntentName", $mockIntent);
-
+        $this->intentsRegistered[] = "IntentName";
         $this->assertEquals(
             $mockIntent,
             IntentRegistry::getIntentHandler($this->getAlexaIncomingRequest("FakeIntentNotRegistered"))
         );
+    }
+
+    public function testUnregisterUnexistingIntent()
+    {
+        $this->assertFalse(IntentRegistry::unregisterIntentHandler('noMatterTheName'));
     }
 
     protected function getIntentClassMock()

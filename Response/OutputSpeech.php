@@ -45,10 +45,11 @@ class OutputSpeech
                 $formatedData['text'] = $this->output;
                 break;
             default:
-                return false;
+                $formatedData = [];
                 break;
         }
-        return $formatedData;
+
+        return !empty($formatedData)?$formatedData:false;
     }
 
     /**
