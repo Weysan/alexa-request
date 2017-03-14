@@ -42,4 +42,15 @@ class AlexaIncomingRequestTest extends TestCase
         $this->assertEquals('value2', $parser->getSessionAttributes()->getAttribute('key2'));
         $this->assertEquals('value3', $parser->getSessionAttributes()->getAttribute('key3'));
     }
+
+    public function testIncomingSlotValue()
+    {
+        $body = file_get_contents(__DIR__ . '/incoming_with_slot.json');
+        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
+        $parser = new AlexaIncomingRequest($request);
+
+        $this->assertEquals('toto', $parser->getIntentSlotValue("Jokename"));
+        $this->assertEquals('1986-04-07', $parser->getIntentSlotValue("Date"));
+        $this->assertFalse($parser->getIntentSlotValue("Whatever"));
+    }
 }

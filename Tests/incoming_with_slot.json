@@ -1,0 +1,35 @@
+{
+  "session": {
+    "sessionId": "fakeSessionId",
+    "application": {
+      "applicationId": "fakeAppId"
+    },
+    "attributes": {
+      "test": "test-value"
+    },
+    "user": {
+      "userId": "fakeUserId"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "fakeRequestId",
+    "locale": "en-US",
+    "timestamp": "2017-03-14T18:28:17Z",
+    "intent": {
+      "name": "GetJoke",
+      "slots": {
+        "Jokename": {
+          "name": "Jokename",
+          "value": "toto"
+        },
+        "Date": {
+          "name": "Date",
+          "value": "1986-04-07"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

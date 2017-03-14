@@ -85,4 +85,15 @@ class AlexaIncomingRequest
     {
         return $this->requestBody['request']['intent']['name'];
     }
+
+    /**
+     * @param string $slotName
+     * @return string|false
+     */
+    public function getIntentSlotValue($slotName)
+    {
+        $slot = $this->requestBody['request']['intent']['slots'];
+
+        return isset($slot[$slotName]) ? $slot[$slotName]['value'] : false;
+    }
 }

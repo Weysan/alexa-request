@@ -76,16 +76,14 @@ class AlexaOutgoingGeneratorTest extends TestCase
      */
     public function testInjectIncomingRequestToIntentHandler()
     {
-        $intentMock = \Mockery::mock(MockIntentWithAlexaIncomingClass::class);
+        $intentMock = new MockIntentWithAlexaIncomingClass();
         $incomingMock = $this->getAlexaIncomingInstance();
-        $this->getIntentClassMock($intentMock);
-
-        $intentMock->shouldReceive("setAlexaIncomingRequest")->with($incomingMock)->once();
 
         IntentRegistry::registerIntentHandler("GetJoke", $intentMock);
 
         new AlexaOutgoingGenerator($incomingMock);
-        $this->assertTrue(true);
+
+        $this->assertEquals($incomingMock, $intentMock->getAlexaIncomingRequest());
     }
 
     /**

@@ -23,4 +23,12 @@ trait AlexaIncomingRequestAwareTrait
         $this->alexaIncomingRequest = $alexaIncomingRequest;
         return $this;
     }
+
+    /**
+     * @return null|AlexaIncomingRequest
+     */
+    public function getAlexaIncomingRequest()
+    {
+        return $this->alexaIncomingRequest;
+    }
 }
