@@ -92,7 +92,8 @@ class AlexaIncomingRequest
      */
     public function getIntentSlotValue($slotName)
     {
-        $slot = $this->requestBody['request']['intent']['slots'];
+        $slot = isset($this->requestBody['request']['intent']['slots'])?
+            $this->requestBody['request']['intent']['slots']:[];
 
         return isset($slot[$slotName]) ? $slot[$slotName]['value'] : false;
     }
