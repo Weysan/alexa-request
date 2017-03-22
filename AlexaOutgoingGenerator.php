@@ -38,13 +38,12 @@ class AlexaOutgoingGenerator
 
         $this->dataToSend['response'] = [
             'outputSpeech' =>
-                IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData()
+                IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData(),
+            'shouldEndSession' => $this->endSession
         ];
 
         $this->dataToSend['sessionAttributes'] =
             IntentRegistry::getIntentHandler($this->incomingRequest)->getSessionAttributes()->getCollection();
-
-        $this->dataToSend['shouldEndSession'] = $this->endSession;
 
         return true;
     }

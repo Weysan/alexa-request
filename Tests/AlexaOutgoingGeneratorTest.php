@@ -31,10 +31,10 @@ class AlexaOutgoingGeneratorTest extends TestCase
                 "outputSpeech" => [
                     "type" => "PlainText",
                     "text" => "fake"
-                ]
+                ],
+                "shouldEndSession" => true
             ],
-            "sessionAttributes" => [],
-            "shouldEndSession" => true
+            "sessionAttributes" => []
         ], $output->getResponse());
     }
 
@@ -50,10 +50,10 @@ class AlexaOutgoingGeneratorTest extends TestCase
                 "outputSpeech" => [
                     "type" => "PlainText",
                     "text" => "fake"
-                ]
+                ],
+                "shouldEndSession" => false
             ],
-            "sessionAttributes" => [],
-            "shouldEndSession" => false
+            "sessionAttributes" => []
         ], $output->getResponse());
 
         $output->willEndSession(true);
@@ -64,10 +64,10 @@ class AlexaOutgoingGeneratorTest extends TestCase
                 "outputSpeech" => [
                     "type" => "PlainText",
                     "text" => "fake"
-                ]
+                ],
+                "shouldEndSession" => true
             ],
-            "sessionAttributes" => [],
-            "shouldEndSession" => true
+            "sessionAttributes" => []
         ], $output->getResponse());
     }
 
