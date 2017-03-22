@@ -16,7 +16,7 @@ composer require weysan/alexa-request
 I use the component `symfony/http-foundation` to handle HTTP requests.
 
 First, you have to create an Intent class which implement `Weysan\Alexa\Intents\IntentsInterface`.
-You need to create a method `getResponseObject` which is returning a `Weysan\Alexa\Response\OutputSpeech` instance.
+You need to create a method `getResponseObject` which is returning a `Weysan\Alexa\Response\Response` instance.
 You also need to create a method `getSessionAttributes` which is returning a `Weysan\Alexa\Response\SessionAttributes` instance.
 
 For example :
@@ -25,21 +25,22 @@ For example :
 namespace My\App;
 
 use Weysan\Alexa\Intents\IntentsInterface;
-use Weysan\Alexa\Response\OutputSpeech;
+use Weysan\Alexa\Response\Response;
 use Weysan\Alexa\Response\SessionAttributes;
 
 class Joke implements IntentsInterface
 {
     /**
-     * @return OutputSpeech
+     * @return Response
      */
     public function getResponseObject()
     {
-        $outputSpeech = new OutputSpeech();
-        $outputSpeech->setType(OutputSpeech::TYPE_PLAIN_TEXT);
-        $outputSpeech->setOutput("Here we go! This is a super Joke...");
+        $response = new Response();
+        $response->addOutput()
+            ->setType(OutputSpeech::TYPE_PLAIN_TEXT)
+            ->setOutput("Here we go! This is a super Joke...");
 
-        return $outputSpeech;
+        return $response;
     }
     
     /**

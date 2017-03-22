@@ -6,6 +6,12 @@ class Response
 {
     protected $response = [];
 
+    public function __construct()
+    {
+        //default value
+        $this->willEndSession(true);
+    }
+
     /**
      * @return OutputSpeech
      */

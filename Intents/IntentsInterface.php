@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Intents;
 
 use Weysan\Alexa\Response\OutputSpeech;
+use Weysan\Alexa\Response\Response;
 use Weysan\Alexa\Response\SessionAttributes;
 
 /**
@@ -11,7 +12,7 @@ use Weysan\Alexa\Response\SessionAttributes;
 interface IntentsInterface
 {
     /**
-     * @return OutputSpeech
+     * @return Response
      */
     public function getResponseObject();
 

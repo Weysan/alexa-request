@@ -23,8 +23,6 @@ class AlexaOutgoingGenerator
     public function __construct(AlexaIncomingRequest $incomingRequest)
     {
         $this->incomingRequest = $incomingRequest;
-        $this->response = new Response();
-        $this->response->willEndSession(true);
         $this->addIncomingRequestToIntentHandler();
     }
 
@@ -46,33 +44,12 @@ class AlexaOutgoingGenerator
     {
         $this->dataToSend['version'] = "0.1";
 
-        $intent_response_formated = IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData();
-
-        $this->response->addOutput()
-            ->setType($intent_response_formated['type'])
-            ->setOutput(
-                isset($intent_response_formated['text'])?
-                $intent_response_formated['text']:
-                $intent_response_formated['ssml']
-            );
-
-        $this->dataToSend['response'] = $this->response->getFormatedData();
+        $this->dataToSend['response'] = IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData();
 
         $this->dataToSend['sessionAttributes'] =
             IntentRegistry::getIntentHandler($this->incomingRequest)->getSessionAttributes()->getCollection();
 
         return true;
-    }
-
-    /**
-     * Configure the response to advice Alexa if we want to close the session after the response.
-     * @param bool $willEndSession
-     * @return $this
-     */
-    public function willEndSession($willEndSession)
-    {
-        $this->response->willEndSession($willEndSession);
-        return $this;
     }
 
     /**

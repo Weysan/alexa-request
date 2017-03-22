@@ -8,6 +8,7 @@ use Weysan\Alexa\AlexaOutgoingGenerator;
 use Weysan\Alexa\IntentRegistry;
 use Weysan\Alexa\Intents\IntentsInterface;
 use Weysan\Alexa\Response\OutputSpeech;
+use Weysan\Alexa\Response\Response;
 use Weysan\Alexa\Response\SessionAttributes;
 use Weysan\Alexa\Tests\Mock\MockIntentWithAlexaIncomingClass;
 
@@ -18,12 +19,14 @@ class AlexaOutgoingGeneratorTest extends TestCase
     {
         IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
         IntentRegistry::registerIntentHandler("GetJokeSSML", $this->getIntentClassMockSSML());
+        IntentRegistry::registerIntentHandler("GetJokeSessionOff", $this->getIntentClassMockSessionEndFalse());
     }
 
     public function tearDown()
     {
         IntentRegistry::unregisterIntentHandler("GetJoke");
         IntentRegistry::unregisterIntentHandler("GetJokeSSML");
+        IntentRegistry::unregisterIntentHandler("GetJokeSessionOff");
     }
 
 
@@ -46,8 +49,7 @@ class AlexaOutgoingGeneratorTest extends TestCase
 
     public function testGenerationOutgoingWithoutEndingSession()
     {
-        $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance());
-        $output->willEndSession(false);
+        $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance('incoming_session_off.json'));
         $this->assertEquals([
             "version" => "0.1",
             "response" => [
@@ -60,7 +62,7 @@ class AlexaOutgoingGeneratorTest extends TestCase
             "sessionAttributes" => []
         ], $output->getResponse());
 
-        $output->willEndSession(true);
+        $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance());
 
         $this->assertEquals([
             "version" => "0.1",
@@ -78,7 +80,6 @@ class AlexaOutgoingGeneratorTest extends TestCase
     public function testGenerationOutgoingWithSSMLMessage()
     {
         $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance('incoming_ssml.json'));
-        $output->willEndSession(false);
         $this->assertEquals([
             "version" => "0.1",
             "response" => [
@@ -86,7 +87,7 @@ class AlexaOutgoingGeneratorTest extends TestCase
                     "type" => "SSML",
                     "ssml" => "fake ssml message"
                 ],
-                "shouldEndSession" => false
+                "shouldEndSession" => true
             ],
             "sessionAttributes" => []
         ], $output->getResponse());
@@ -122,16 +123,34 @@ class AlexaOutgoingGeneratorTest extends TestCase
 
     protected function getIntentClassMock($intentMock = null)
     {
-        $fakeOutput = new OutputSpeech();
-        $fakeOutput->setType(OutputSpeech::TYPE_PLAIN_TEXT);
-        $fakeOutput->setOutput("fake");
+        $fakeResponse = new Response();
+        $fakeResponse->addOutput()->setType(OutputSpeech::TYPE_PLAIN_TEXT)->setOutput("fake");
 
         if (null === $intentMock) {
             $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
         }
 
         $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
-            $fakeOutput
+            $fakeResponse
+        );
+        $intentMock->shouldReceive("getSessionAttributes")->once()->andReturn(
+            new SessionAttributes()
+        );
+        return $intentMock;
+    }
+
+    protected function getIntentClassMockSessionEndFalse($intentMock = null)
+    {
+        $fakeResponse = new Response();
+        $fakeResponse->willEndSession(false);
+        $fakeResponse->addOutput()->setType(OutputSpeech::TYPE_PLAIN_TEXT)->setOutput("fake");
+
+        if (null === $intentMock) {
+            $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
+        }
+
+        $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
+            $fakeResponse
         );
         $intentMock->shouldReceive("getSessionAttributes")->once()->andReturn(
             new SessionAttributes()
@@ -141,16 +160,15 @@ class AlexaOutgoingGeneratorTest extends TestCase
 
     protected function getIntentClassMockSSML($intentMock = null)
     {
-        $fakeOutput = new OutputSpeech();
-        $fakeOutput->setType(OutputSpeech::TYPE_SSML);
-        $fakeOutput->setOutput("fake ssml message");
+        $fakeResponse = new Response();
+        $fakeResponse->addOutput()->setType(OutputSpeech::TYPE_SSML)->setOutput("fake ssml message");
 
         if (null === $intentMock) {
             $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
         }
 
         $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
-            $fakeOutput
+            $fakeResponse
         );
         $intentMock->shouldReceive("getSessionAttributes")->once()->andReturn(
             new SessionAttributes()
