@@ -1,6 +1,8 @@
 <?php
 namespace Weysan\Alexa;
 
+use Weysan\Alexa\Response\Response;
+
 class AlexaOutgoingGenerator
 {
     /**
@@ -12,9 +14,16 @@ class AlexaOutgoingGenerator
 
     protected $endSession = true;
 
+    /**
+     * @var Response
+     */
+    protected $response;
+
     public function __construct(AlexaIncomingRequest $incomingRequest)
     {
         $this->incomingRequest = $incomingRequest;
+        $this->response = new Response();
+        $this->response->willEndSession(true);
         $this->addIncomingRequestToIntentHandler();
     }
 
@@ -36,11 +45,9 @@ class AlexaOutgoingGenerator
     {
         $this->dataToSend['version'] = "0.1";
 
-        $this->dataToSend['response'] = [
-            'outputSpeech' =>
-                IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData(),
-            'shouldEndSession' => $this->endSession
-        ];
+        $this->response->setOutputSpeech(IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject());
+
+        $this->dataToSend['response'] = $this->response->getFormatedData();
 
         $this->dataToSend['sessionAttributes'] =
             IntentRegistry::getIntentHandler($this->incomingRequest)->getSessionAttributes()->getCollection();
@@ -55,7 +62,7 @@ class AlexaOutgoingGenerator
      */
     public function willEndSession($willEndSession)
     {
-        $this->endSession = (bool)$willEndSession;
+        $this->response->willEndSession($willEndSession);
         return $this;
     }
 
