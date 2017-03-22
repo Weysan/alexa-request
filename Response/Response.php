@@ -6,28 +6,24 @@ class Response
 {
     protected $response = [];
 
-    protected $response_formated = [];
-
     /**
-     * @param OutputSpeech $outputSpeech
-     * @return $this
+     * @return OutputSpeech
      */
-    public function setOutputSpeech(OutputSpeech $outputSpeech)
+    public function addOutput()
     {
+        $outputSpeech = new OutputSpeech();
         $this->response['outputSpeech'] = $outputSpeech;
-        $this->response_formated['outputSpeech'] = $outputSpeech->getFormatedData();
-        return $this;
+        return $outputSpeech;
     }
 
     /**
-     * @param OutputSpeech $outputSpeech
-     * @return $this
+     * @return OutputSpeech
      */
-    public function setReprompt(OutputSpeech $outputSpeech)
+    public function addReprompt()
     {
+        $outputSpeech = new OutputSpeech();
         $this->response['reprompt']['outputSpeech'] = $outputSpeech;
-        $this->response_formated['reprompt']['outputSpeech'] = $outputSpeech->getFormatedData();
-        return $this;
+        return $outputSpeech;
     }
 
     /**
@@ -35,7 +31,12 @@ class Response
      */
     public function getFormatedData()
     {
-        return $this->response_formated;
+        $formated = $this->response;
+        $formated['outputSpeech'] = $formated['outputSpeech']->getFormatedData();
+        if (isset($formated['reprompt']['outputSpeech'])) {
+            $formated['reprompt']['outputSpeech'] = $formated['reprompt']['outputSpeech']->getFormatedData();
+        }
+        return $formated;
     }
 
     /**
@@ -46,7 +47,6 @@ class Response
     public function willEndSession($willEndSession)
     {
         $this->response['shouldEndSession'] = (bool)$willEndSession;
-        $this->response_formated['shouldEndSession'] = (bool)$willEndSession;
         return $this;
     }
 }

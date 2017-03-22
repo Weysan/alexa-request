@@ -1,6 +1,7 @@
 <?php
 namespace Weysan\Alexa;
 
+use Weysan\Alexa\Response\OutputSpeech;
 use Weysan\Alexa\Response\Response;
 
 class AlexaOutgoingGenerator
@@ -45,7 +46,15 @@ class AlexaOutgoingGenerator
     {
         $this->dataToSend['version'] = "0.1";
 
-        $this->response->setOutputSpeech(IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject());
+        $intent_response_formated = IntentRegistry::getIntentHandler($this->incomingRequest)->getResponseObject()->getFormatedData();
+
+        $this->response->addOutput()
+            ->setType($intent_response_formated['type'])
+            ->setOutput(
+                isset($intent_response_formated['text'])?
+                $intent_response_formated['text']:
+                $intent_response_formated['ssml']
+            );
 
         $this->dataToSend['response'] = $this->response->getFormatedData();
 

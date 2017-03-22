@@ -19,7 +19,7 @@ class OutputSpeech
 
         $this->type = $type;
 
-        return true;
+        return $this;
     }
 
     public function setOutput($output)
@@ -28,7 +28,7 @@ class OutputSpeech
             return false;
         }
         $this->output = $output;
-        return true;
+        return $this;
     }
 
     /**

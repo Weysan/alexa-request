@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "sessionId": "SessionId.hjkjhj-6546546-lfhdsjh",
+    "application": {
+      "applicationId": "fakeappId"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "fakeuserID-hjfd-55674654"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.2bf03269-972a-40e0-bc09-d1fe5056d927",
+    "timestamp": "2017-03-04T14:11:58Z",
+    "locale": "en-US",
+    "intent": {
+      "name": "GetJokeSSML"
+    },
+    "inDialog": false
+  }
+}

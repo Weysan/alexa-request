@@ -10,7 +10,7 @@ class OutputSpeechTest extends TestCase
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType(OutputSpeech::TYPE_PLAIN_TEXT);
-        $this->assertTrue($outputSpeech->setOutput("Simple text to return"));
+        $this->assertNotFalse($outputSpeech->setOutput("Simple text to return"));
 
         $this->assertEquals([
             "type" => "PlainText",
@@ -22,7 +22,7 @@ class OutputSpeechTest extends TestCase
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType(OutputSpeech::TYPE_SSML);
-        $this->assertTrue($outputSpeech->setOutput("Text SSML format."));
+        $this->assertNotFalse($outputSpeech->setOutput("Text SSML format."));
 
         $this->assertEquals([
             "type" => "SSML",
@@ -45,7 +45,7 @@ class OutputSpeechTest extends TestCase
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType("bla bla bla");
-        $this->assertTrue($outputSpeech->setOutput("my output"));
+        $this->assertNotFalse($outputSpeech->setOutput("my output"));
 
         $this->assertFalse($outputSpeech->getFormatedData());
     }

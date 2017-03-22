@@ -13,16 +13,22 @@ use Weysan\Alexa\Tests\Mock\MockIntentWithAlexaIncomingClass;
 
 class AlexaOutgoingGeneratorTest extends TestCase
 {
+
+    public function setUp()
+    {
+        IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
+        IntentRegistry::registerIntentHandler("GetJokeSSML", $this->getIntentClassMockSSML());
+    }
+
     public function tearDown()
     {
         IntentRegistry::unregisterIntentHandler("GetJoke");
+        IntentRegistry::unregisterIntentHandler("GetJokeSSML");
     }
 
 
     public function testGenerationOutgoing()
     {
-        IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
-
         $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance());
 
         $this->assertEquals([
@@ -40,8 +46,6 @@ class AlexaOutgoingGeneratorTest extends TestCase
 
     public function testGenerationOutgoingWithoutEndingSession()
     {
-        IntentRegistry::registerIntentHandler("GetJoke", $this->getIntentClassMock());
-
         $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance());
         $output->willEndSession(false);
         $this->assertEquals([
@@ -71,6 +75,24 @@ class AlexaOutgoingGeneratorTest extends TestCase
         ], $output->getResponse());
     }
 
+    public function testGenerationOutgoingWithSSMLMessage()
+    {
+        $output = new AlexaOutgoingGenerator($this->getAlexaIncomingInstance('incoming_ssml.json'));
+        $output->willEndSession(false);
+        $this->assertEquals([
+            "version" => "0.1",
+            "response" => [
+                "outputSpeech" => [
+                    "type" => "SSML",
+                    "ssml" => "fake ssml message"
+                ],
+                "shouldEndSession" => false
+            ],
+            "sessionAttributes" => []
+        ], $output->getResponse());
+    }
+
+
     /**
      * Test the DI of incoming message
      */
@@ -87,11 +109,12 @@ class AlexaOutgoingGeneratorTest extends TestCase
     }
 
     /**
+     * @param string $file_incoming
      * @return AlexaIncomingRequest
      */
-    protected function getAlexaIncomingInstance()
+    protected function getAlexaIncomingInstance($file_incoming = 'incoming.json')
     {
-        $body = file_get_contents(__DIR__ . '/incoming.json');
+        $body = file_get_contents(__DIR__ . '/' . $file_incoming);
         $request = new Request(array(), array(), array(), array(), array(), array(), $body);
         $parser = new AlexaIncomingRequest($request);
         return $parser;
@@ -102,6 +125,25 @@ class AlexaOutgoingGeneratorTest extends TestCase
         $fakeOutput = new OutputSpeech();
         $fakeOutput->setType(OutputSpeech::TYPE_PLAIN_TEXT);
         $fakeOutput->setOutput("fake");
+
+        if (null === $intentMock) {
+            $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
+        }
+
+        $intentMock->shouldReceive("getResponseObject")->once()->andReturn(
+            $fakeOutput
+        );
+        $intentMock->shouldReceive("getSessionAttributes")->once()->andReturn(
+            new SessionAttributes()
+        );
+        return $intentMock;
+    }
+
+    protected function getIntentClassMockSSML($intentMock = null)
+    {
+        $fakeOutput = new OutputSpeech();
+        $fakeOutput->setType(OutputSpeech::TYPE_SSML);
+        $fakeOutput->setOutput("fake ssml message");
 
         if (null === $intentMock) {
             $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
