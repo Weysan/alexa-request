@@ -95,6 +95,6 @@ class AlexaIncomingRequest
         $slot = isset($this->requestBody['request']['intent']['slots'])?
             $this->requestBody['request']['intent']['slots']:[];
 
-        return isset($slot[$slotName]) ? $slot[$slotName]['value'] : false;
+        return isset($slot[$slotName]['value']) ? $slot[$slotName]['value'] : false;
     }
 }
