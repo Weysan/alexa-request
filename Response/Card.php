@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Response;
 
 use Weysan\Alexa\Response\Cards\CardInterface;
+use Weysan\Alexa\Response\Cards\LinkAccountCard;
 use Weysan\Alexa\Response\Cards\SimpleCard;
 use Weysan\Alexa\Response\Cards\StandardCard;
 
@@ -24,6 +25,9 @@ class Card
                 break;
             case StandardCard::TYPE:
                 return new StandardCard();
+                break;
+            case LinkAccountCard::TYPE:
+                return new LinkAccountCard();
                 break;
             default:
                 return false;
