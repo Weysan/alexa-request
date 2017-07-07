@@ -9,6 +9,10 @@ class SimpleCard implements CardInterface
 {
     const TYPE = 'Simple';
 
+    protected $title;
+
+    protected $content;
+
     /**
      * @return array
      */
@@ -16,10 +20,30 @@ class SimpleCard implements CardInterface
     {
         $formated = [
             'type' => self::TYPE,
-            'title' => '',
-            'content' => ''
+            'title' => $this->title,
+            'content' => $this->content
         ];
 
         return $formated;
+    }
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @param string $content
+     * @return $this
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
     }
 }
