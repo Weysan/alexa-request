@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
+use Weysan\Alexa\Exceptions\UnexpectedCardTypeException;
 use Weysan\Alexa\Response\Card;
 use Weysan\Alexa\Response\Cards\LinkAccountCard;
 use Weysan\Alexa\Response\Cards\SimpleCard;
@@ -58,5 +59,14 @@ class CardTest extends TestCase
                 'largeImageUrl' => "http://www.large.url"
             ]
         ], $simpleCard->getFormatedData());
+    }
+
+    /**
+     * @expectedException \Weysan\Alexa\Exceptions\UnexpectedCardTypeException
+     */
+    public function testUnexpectedCard()
+    {
+        $card = new Card();
+        $card->getType('unexpected-card-type');
     }
 }

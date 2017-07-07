@@ -1,6 +1,7 @@
 <?php
 namespace Weysan\Alexa\Response;
 
+use Weysan\Alexa\Exceptions\UnexpectedCardTypeException;
 use Weysan\Alexa\Response\Cards\CardInterface;
 use Weysan\Alexa\Response\Cards\LinkAccountCard;
 use Weysan\Alexa\Response\Cards\SimpleCard;
@@ -14,7 +15,8 @@ class Card
 {
     /**
      * @param $type
-     * @return CardInterface|bool
+     * @return CardInterface
+     * @throws UnexpectedCardTypeException
      */
     public function getType($type)
     {
@@ -30,7 +32,7 @@ class Card
                 return new LinkAccountCard();
                 break;
             default:
-                return false;
+                throw new UnexpectedCardTypeException($type);
                 break;
         }
     }

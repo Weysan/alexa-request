@@ -7,6 +7,7 @@ use Weysan\Alexa\AlexaIncomingRequest;
 use Weysan\Alexa\AlexaOutgoingGenerator;
 use Weysan\Alexa\IntentRegistry;
 use Weysan\Alexa\Intents\IntentsInterface;
+use Weysan\Alexa\Response\Cards\LinkAccountCard;
 use Weysan\Alexa\Response\OutputSpeech;
 use Weysan\Alexa\Response\Response;
 use Weysan\Alexa\Response\SessionAttributes;
@@ -57,7 +58,16 @@ class AlexaOutgoingGeneratorTest extends TestCase
                     "type" => "PlainText",
                     "text" => "fake"
                 ],
-                "shouldEndSession" => false
+                "card" => [
+                    'type' => 'LinkAccount'
+                ],
+                "shouldEndSession" => false,
+                'reprompt' => [
+                    "outputSpeech" => [
+                        "type" => "PlainText",
+                        "text" => "fake"
+                    ]
+                ]
             ],
             "sessionAttributes" => []
         ], $output->getResponse());
@@ -144,6 +154,8 @@ class AlexaOutgoingGeneratorTest extends TestCase
         $fakeResponse = new Response();
         $fakeResponse->willEndSession(false);
         $fakeResponse->addOutput()->setType(OutputSpeech::TYPE_PLAIN_TEXT)->setOutput("fake");
+        $fakeResponse->addReprompt()->setType(OutputSpeech::TYPE_PLAIN_TEXT)->setOutput("fake");
+        $fakeResponse->addCard(LinkAccountCard::TYPE);
 
         if (null === $intentMock) {
             $intentMock = \Mockery::mock(IntentsInterface::class)->makePartial();
