@@ -13,7 +13,10 @@ composer require weysan/alexa-request
 
 ## How to use it
 
-I use the component `symfony/http-foundation` to handle HTTP requests.
+The library is now compatible PSR-7. If you use HttpFoundation, you will need to use
+the library `zendframework/zend-diactoros` to convert `Request` in `ServerRequestInterface` class.
+
+see the documentation here : http://symfony.com/blog/psr-7-support-in-symfony-is-here
 
 First, you have to create an Intent class which implement `Weysan\Alexa\Intents\IntentsInterface`.
 You need to create a method `getResponseObject` which is returning a `Weysan\Alexa\Response\Response` instance.
