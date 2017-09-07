@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Weysan\Alexa\AlexaIncomingRequest;
 use Weysan\Alexa\IntentRegistry;
@@ -66,8 +67,12 @@ class IntentRegistryTest extends TestCase
                 ]
         ]);
 
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+
         $alexaIncomingRequest = new AlexaIncomingRequest(
-            new Request(array(), array(), array(), array(), array(), array(), $body)
+            $psr_request
         );
         return $alexaIncomingRequest;
     }

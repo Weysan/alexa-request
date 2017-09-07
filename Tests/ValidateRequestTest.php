@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Weysan\Alexa\AlexaIncomingRequest;
 use Weysan\Alexa\IntentRegistry;
@@ -53,8 +54,10 @@ class ValidateRequestTest extends TestCase
     protected function getAlexaIncomingInstance()
     {
         $body = file_get_contents(__DIR__ . '/incoming.json');
-        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
-        return new AlexaIncomingRequest($request);
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+        return new AlexaIncomingRequest($psr_request);
     }
 
     /**

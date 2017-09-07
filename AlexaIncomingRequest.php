@@ -1,7 +1,7 @@
 <?php
 namespace Weysan\Alexa;
 
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Weysan\Alexa\Response\SessionAttributes;
 
 class AlexaIncomingRequest
@@ -10,9 +10,9 @@ class AlexaIncomingRequest
 
     protected $sessionAttributes;
 
-    public function __construct(Request $request)
+    public function __construct(ServerRequestInterface $request)
     {
-        $this->requestBody = json_decode($request->getContent(), true);
+        $this->requestBody = json_decode($request->getBody()->getContents(), true);
         $this->sessionAttributes = new SessionAttributes();
         $this->parseSessionAttributes();
     }
