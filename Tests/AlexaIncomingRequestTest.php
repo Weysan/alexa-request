@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Weysan\Alexa\AlexaIncomingRequest;
 use Weysan\Alexa\Response\SessionAttributes;
@@ -12,8 +13,10 @@ class AlexaIncomingRequestTest extends TestCase
     public function testIncomingParsing()
     {
         $body = file_get_contents(__DIR__ . '/incoming.json');
-        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
-        $parser = new AlexaIncomingRequest($request);
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+        $parser = new AlexaIncomingRequest($psr_request);
 
         $this->assertNotEmpty($parser->getAppId());
         $this->assertEquals("GetJoke", $parser->getRequestIntent());
@@ -34,8 +37,10 @@ class AlexaIncomingRequestTest extends TestCase
                 ]
             ]
         ]);
-        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
-        $parser = new AlexaIncomingRequest($request);
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+        $parser = new AlexaIncomingRequest($psr_request);
 
         $this->assertTrue($parser->getSessionAttributes() instanceof SessionAttributes);
         $this->assertEquals('value1', $parser->getSessionAttributes()->getAttribute('key1'));
@@ -46,8 +51,10 @@ class AlexaIncomingRequestTest extends TestCase
     public function testIncomingSlotValue()
     {
         $body = file_get_contents(__DIR__ . '/incoming_with_slot.json');
-        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
-        $parser = new AlexaIncomingRequest($request);
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+        $parser = new AlexaIncomingRequest($psr_request);
 
         $this->assertEquals('toto', $parser->getIntentSlotValue("Jokename"));
         $this->assertEquals('1986-04-07', $parser->getIntentSlotValue("Date"));

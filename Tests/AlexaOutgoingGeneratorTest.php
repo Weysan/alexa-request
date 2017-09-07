@@ -2,6 +2,7 @@
 namespace Weysan\Alexa\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Weysan\Alexa\AlexaIncomingRequest;
 use Weysan\Alexa\AlexaOutgoingGenerator;
@@ -126,8 +127,10 @@ class AlexaOutgoingGeneratorTest extends TestCase
     protected function getAlexaIncomingInstance($file_incoming = 'incoming.json')
     {
         $body = file_get_contents(__DIR__ . '/' . $file_incoming);
-        $request = new Request(array(), array(), array(), array(), array(), array(), $body);
-        $parser = new AlexaIncomingRequest($request);
+        $psr7Factory = new DiactorosFactory();
+        $request = Request::create('/', 'POST', array(), array(), array(), array(), $body);
+        $psr_request = $psr7Factory->createRequest($request);
+        $parser = new AlexaIncomingRequest($psr_request);
         return $parser;
     }
 
