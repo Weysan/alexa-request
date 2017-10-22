@@ -2,6 +2,8 @@
 namespace Weysan\Alexa\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
+use Weysan\Alexa\Exceptions\UnexpectedOutputTypeException;
+use Weysan\Alexa\Exceptions\WrongOutputFormatException;
 use Weysan\Alexa\Response\OutputSpeech;
 
 class OutputSpeechTest extends TestCase
@@ -30,23 +32,24 @@ class OutputSpeechTest extends TestCase
         ], $outputSpeech->getFormatedData());
     }
 
+    /**
+     * @expectedException WrongOutputFormatException
+     */
     public function testWrongDataToOutput()
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType(OutputSpeech::TYPE_SSML);
-        $this->assertFalse($outputSpeech->setOutput([
+        $outputSpeech->setOutput([
             'no matter'
-        ]));
-
-        $this->assertFalse($outputSpeech->getFormatedData());
+        ]);
     }
 
+    /**
+     * @expectedException UnexpectedOutputTypeException
+     */
     public function testWrongOutputType()
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType("bla bla bla");
-        $this->assertNotFalse($outputSpeech->setOutput("my output"));
-
-        $this->assertFalse($outputSpeech->getFormatedData());
     }
 }
