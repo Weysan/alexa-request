@@ -64,7 +64,6 @@ class OutputSpeech
                 break;
             default:
                 throw new UnexpectedOutputTypeException($this->type);
-                break;
         }
 
         return $formatedData;

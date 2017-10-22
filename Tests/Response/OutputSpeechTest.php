@@ -43,11 +43,30 @@ class OutputSpeechTest extends TestCase
     }
 
     /**
+     * @expectedException Weysan\Alexa\Exceptions\WrongOutputFormatException
+     */
+    public function testEmptyDataException()
+    {
+        $outputSpeech = new OutputSpeech();
+        $outputSpeech->getFormatedData();
+    }
+
+    /**
      * @expectedException Weysan\Alexa\Exceptions\UnexpectedOutputTypeException
      */
     public function testWrongOutputType()
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType("bla bla bla");
+    }
+
+    /**
+     * @expectedException Weysan\Alexa\Exceptions\UnexpectedOutputTypeException
+     */
+    public function testWrongOutputTypeIfNoSetType()
+    {
+        $outputSpeech = new OutputSpeech();
+        $outputSpeech->setOutput("bla bla bla")
+                     ->getFormatedData();
     }
 }
