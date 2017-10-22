@@ -11,6 +11,10 @@ class OutputSpeech
 
     protected $output;
 
+    /**
+     * @param string $type should be PlainText or SSML
+     * @return $this|bool
+     */
     public function setType($type)
     {
         if ($type !== self::TYPE_PLAIN_TEXT && $type !== self::TYPE_SSML) {
@@ -22,6 +26,10 @@ class OutputSpeech
         return $this;
     }
 
+    /**
+     * @param string $output
+     * @return $this|bool
+     */
     public function setOutput($output)
     {
         if (!is_string($output)) {
