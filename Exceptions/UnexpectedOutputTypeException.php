@@ -7,7 +7,7 @@ use Weysan\Alexa\Response\OutputSpeech;
  * Class UnexpectedOutputTypeException
  * @package Weysan\Alexa\Exceptions
  */
-class UnexpectedOutputTypeException extends \Exception
+class UnexpectedOutputTypeException extends AlexaRequestException
 {
     public function __construct($wrong_type)
     {

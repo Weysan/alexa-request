@@ -5,7 +5,7 @@ namespace Weysan\Alexa\Exceptions;
  * Class WrongOutputFormatException
  * @package Weysan\Alexa\Exceptions
  */
-class WrongOutputFormatException extends \Exception
+class WrongOutputFormatException extends AlexaRequestException
 {
     public function __construct($wrong_output)
     {

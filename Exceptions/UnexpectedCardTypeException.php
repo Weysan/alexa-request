@@ -5,7 +5,7 @@ namespace Weysan\Alexa\Exceptions;
  * Class UnexpectedCardTypeException
  * @package Weysan\Alexa\Exceptions
  */
-class UnexpectedCardTypeException extends \Exception
+class UnexpectedCardTypeException extends AlexaRequestException
 {
     public function __construct($unexpectedCardTypeName)
     {
