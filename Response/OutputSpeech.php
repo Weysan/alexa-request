@@ -1,6 +1,13 @@
 <?php
 namespace Weysan\Alexa\Response;
 
+use Weysan\Alexa\Exceptions\UnexpectedOutputTypeException;
+use Weysan\Alexa\Exceptions\WrongOutputFormatException;
+
+/**
+ * Class OutputSpeech
+ * @package Weysan\Alexa\Response
+ */
 class OutputSpeech
 {
     const TYPE_PLAIN_TEXT = "PlainText";
@@ -11,10 +18,15 @@ class OutputSpeech
 
     protected $output;
 
+    /**
+     * @param string $type
+     * @return $this
+     * @throws UnexpectedOutputTypeException
+     */
     public function setType($type)
     {
         if ($type !== self::TYPE_PLAIN_TEXT && $type !== self::TYPE_SSML) {
-            return false;
+            throw new UnexpectedOutputTypeException($type);
         }
 
         $this->type = $type;
@@ -22,10 +34,15 @@ class OutputSpeech
         return $this;
     }
 
+    /**
+     * @param string $output
+     * @return $this
+     * @throws WrongOutputFormatException
+     */
     public function setOutput($output)
     {
         if (!is_string($output)) {
-            return false;
+            throw new WrongOutputFormatException($output);
         }
         $this->output = $output;
         return $this;
@@ -33,7 +50,8 @@ class OutputSpeech
 
     /**
      * @param array $formatedData
-     * @return array|bool
+     * @return array
+     * @throws UnexpectedOutputTypeException
      */
     protected function addFormatedOutput(array $formatedData)
     {
@@ -45,20 +63,21 @@ class OutputSpeech
                 $formatedData['text'] = $this->output;
                 break;
             default:
-                $formatedData = [];
+                throw new UnexpectedOutputTypeException($this->type);
                 break;
         }
 
-        return !empty($formatedData)?$formatedData:false;
+        return $formatedData;
     }
 
     /**
-     * @return array|bool
+     * @return array
+     * @throws WrongOutputFormatException
      */
     public function getFormatedData()
     {
         if (empty($this->output)) {
-            return false;
+            throw new WrongOutputFormatException($this->output);
         }
 
         $formated = [
