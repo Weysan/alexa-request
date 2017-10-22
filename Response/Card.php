@@ -14,7 +14,7 @@ use Weysan\Alexa\Response\Cards\StandardCard;
 class Card
 {
     /**
-     * @param $type
+     * @param string $type
      * @return CardInterface
      * @throws UnexpectedCardTypeException
      */
