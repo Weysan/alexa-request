@@ -30,23 +30,43 @@ class OutputSpeechTest extends TestCase
         ], $outputSpeech->getFormatedData());
     }
 
+    /**
+     * @expectedException Weysan\Alexa\Exceptions\WrongOutputFormatException
+     */
     public function testWrongDataToOutput()
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType(OutputSpeech::TYPE_SSML);
-        $this->assertFalse($outputSpeech->setOutput([
+        $outputSpeech->setOutput([
             'no matter'
-        ]));
-
-        $this->assertFalse($outputSpeech->getFormatedData());
+        ]);
     }
 
+    /**
+     * @expectedException Weysan\Alexa\Exceptions\WrongOutputFormatException
+     */
+    public function testEmptyDataException()
+    {
+        $outputSpeech = new OutputSpeech();
+        $outputSpeech->getFormatedData();
+    }
+
+    /**
+     * @expectedException Weysan\Alexa\Exceptions\UnexpectedOutputTypeException
+     */
     public function testWrongOutputType()
     {
         $outputSpeech = new OutputSpeech();
         $outputSpeech->setType("bla bla bla");
-        $this->assertNotFalse($outputSpeech->setOutput("my output"));
+    }
 
-        $this->assertFalse($outputSpeech->getFormatedData());
+    /**
+     * @expectedException Weysan\Alexa\Exceptions\UnexpectedOutputTypeException
+     */
+    public function testWrongOutputTypeIfNoSetType()
+    {
+        $outputSpeech = new OutputSpeech();
+        $outputSpeech->setOutput("bla bla bla")
+                     ->getFormatedData();
     }
 }
