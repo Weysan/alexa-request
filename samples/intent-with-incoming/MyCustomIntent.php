@@ -10,9 +10,9 @@ class MyCustomIntent implements \Weysan\Alexa\Intents\IntentsInterface
      */
     protected $alexaIncoming;
 
-    public function setAlexaIncomingRequest(\Weysan\Alexa\AlexaIncomingRequest $incmoing)
+    public function setAlexaIncomingRequest(\Weysan\Alexa\AlexaIncomingRequest $incoming)
     {
-        $this->alexaIncoming = $incmoing;
+        $this->alexaIncoming = $incoming;
         return $this;
     }
 
